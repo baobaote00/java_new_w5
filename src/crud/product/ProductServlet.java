@@ -3,7 +3,9 @@ package crud.product;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -22,9 +24,11 @@ import javax.servlet.http.Part;
 public class ProductServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ProductDAO productDAO;
-
+	private List<Product> listProductCart;
+	
 	public void init() {
 		productDAO = new ProductDAO();
+		listProductCart = new ArrayList<Product>();
 	}
 
 	/**
@@ -73,8 +77,12 @@ public class ProductServlet extends HttpServlet {
 		}
 	}
 
-	public void addToCard(HttpServletRequest request, HttpServletResponse response) {
-		
+	public void addToCard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Product product = productDAO.selectProduct(Integer.parseInt(request.getParameter("id")));
+		listProductCart.add(product);
+		request.setAttribute("listProductCart", listProductCart);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("../productCart.jsp");
+		dispatcher.forward(request, response);
 	}
 
 	/**
@@ -117,14 +125,22 @@ public class ProductServlet extends HttpServlet {
 
 		InputStream image = null;
 		Part filePart = request.getPart("image");
+		
 		if (filePart != null) {
 			image = filePart.getInputStream();
 		}
+		
 		String description = request.getParameter("description");
-		System.out.println(description);
 		Product product = new Product(name, image, price, description);
-		productDAO.insertProduct(product);
-		System.out.println(product);
+		productDAO.insertProduct(product,image);
+		
+		Logger logger = Logger.getLogger(this.getClass().getName());
+		logger.info("hinh = "+(filePart==null));
+		logger.info(product.toString());
+		logger.info((image==null)+"");
+		logger.info(product.getBase64(image));
+		logger.info((product.getInputStream().read()==-1)+"");
+		logger.info((image.read()==-1)+"");
 		response.sendRedirect("../product/list");
 	}
 

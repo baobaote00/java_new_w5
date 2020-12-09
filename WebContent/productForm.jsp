@@ -18,7 +18,7 @@
 
 			<ul class="navbar-nav">
 				<li>
-					<a href="<%=request.getContextPath()%>/product_list" class="nav-link">Products</a>
+					<a href="<%=request.getContextPath()%>/product/list" class="nav-link">Products</a>
 				</li>
 			</ul>
 		</nav>
@@ -63,8 +63,8 @@
 				</fieldset>
 
 				<fieldset class="form-group">
-					<label for="image">Product image:</label> 
-					<input type="file" id="image" name="image" size="50" />
+					<label for="image">Product image:</label>
+					<input type="file" id="image" name="image" />
 				</fieldset>
 				
 				<fieldset class="form-group">

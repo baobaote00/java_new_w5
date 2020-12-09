@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
+import java.util.logging.Logger;
 
 public class Product {
 	private int id;
@@ -84,25 +85,31 @@ public class Product {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		byte[] buffer = new byte[4096];
 		int bytesRead = -1;
-
+		
+		
 		try {
 			while ((bytesRead = image.read(buffer)) != -1) {
 				outputStream.write(buffer, 0, bytesRead);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e);
 		}
 		byte[] imageBytes = outputStream.toByteArray();
 		String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-		System.out.println(base64Image);
+		try {
+			outputStream.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return base64Image;
 	}
 
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return this.productName + this.description;
+		return this.productName + this.description+(this.image==null);
 	}
 
 	public InputStream getInputStream() {

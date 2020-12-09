@@ -81,7 +81,7 @@ public class CategoryDAO {
 
 		try (Connection connection = getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_CATEGORY);) {
-			System.out.println(preparedStatement);
+//			System.out.println(preparedStatement);
 
 			ResultSet rs = preparedStatement.executeQuery();
 
@@ -91,7 +91,7 @@ public class CategoryDAO {
 				category.add(new Category(id, name));
 			}
 		} catch (SQLException e) {
-			printSQLException(e);
+//			System.out.println(e);
 		}
 		return category;
 	}

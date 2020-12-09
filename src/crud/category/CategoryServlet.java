@@ -59,13 +59,8 @@ public class CategoryServlet extends HttpServlet {
 			throws SQLException, IOException, ServletException {
 		List<Category> listCategory = categoryDAO.selectAllCategory();
 		request.setAttribute("listCategory", listCategory);
-		for (Category category : listCategory) {
-			System.out.println(category.getName());
-		}
 		RequestDispatcher dispatcher = request.getRequestDispatcher("../categoryList.jsp");
 		dispatcher.forward(request, response);
-		
-		
 	}
 
 	private void showNewForm(HttpServletRequest request, HttpServletResponse response)
